@@ -1,11 +1,15 @@
 import * as React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Login from '../Login/Login';
 
 class App extends React.Component {
   public render() {
     return (
-      <div className="App">
-        <h1>{'Hello World!'}</h1>
-      </div>
+      <Router>
+        <div className="container-fluid">
+          <Route exact={true} path="/login" component={Login} />
+        </div>
+      </Router>
     );
   }
 }

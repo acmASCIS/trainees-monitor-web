@@ -1,5 +1,13 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Nunito", sans-serif;
+}
+
+.height-100 {
+  min-height: 100vh;
+}
+
+.form-control:focus {
+  box-shadow: none;
 }
