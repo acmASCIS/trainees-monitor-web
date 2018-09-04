@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { History } from 'history';
+import message from 'antd/lib/message';
 
 import TextFieldGroup from '../../components/TextFieldGroup/TextFieldGroup';
 import { login } from '../../services/AccountsService';
@@ -31,10 +32,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     const { email, password } = this.state;
     login({ email, password }).then(error => {
       if (error) {
-        console.log(error);
         this.setState({ error: error.message });
       } else {
-        this.props.history.push('/');
+        message.success('Welcome back');
+        this.props.history.push('/dashboard');
       }
     });
   };
@@ -45,15 +46,22 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     } as ILoginState);
   };
 
+  public resetError = () => {
+    this.setState({ error: '' });
+  };
+
   public render() {
     return (
       <div className="row  height-100 justify-content-center align-items-center">
-        <div className="col-lg-4 d-flex">
+        <div className="col-lg-4 col-md-7 d-flex">
           <div className="flex-fill py-4">
             <h1 className="h2 text-center mb-4">Login</h1>
             {this.state.error && (
               <div className="alert alert-danger alert-dismissible mb-4 fade show" role="alert">
                 {this.state.error}
+                <button type="button" className="close" onClick={this.resetError}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
             )}
             <form onSubmit={this.onSubmit}>

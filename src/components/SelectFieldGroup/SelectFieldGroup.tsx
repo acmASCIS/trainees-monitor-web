@@ -1,26 +1,25 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-interface ITextFieldGroupProps {
+interface ISelectFieldGroupProps {
   name: string;
+  value: string;
   label?: string;
   placeholder?: string;
-  value: string;
+  options: string[];
   info?: string;
   error?: string;
-  type: string;
   onChange: (event: any) => void;
   disabled?: boolean;
 }
 
-const TextFieldGroup = (props: ITextFieldGroupProps) => {
-  const { label, type, error, placeholder, name, value, onChange, info } = props;
+const SelectFieldGroup = (props: ISelectFieldGroupProps) => {
+  const { label, value, error, placeholder, name, options, onChange, info } = props;
   return (
     <div>
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
-        <input
-          type={type}
+        <select
           className={classnames('form-control', {
             'is-invalid': error
           })}
@@ -28,7 +27,11 @@ const TextFieldGroup = (props: ITextFieldGroupProps) => {
           name={name}
           value={value}
           onChange={onChange}
-        />
+        >
+          {options.map((option, index) => {
+            return <option key={index}>{option}</option>;
+          })}
+        </select>
         {info && <small className="form-text text-muted">{info}</small>}
         {error && <small className="invalid-feedback">{error}</small>}
       </div>
@@ -36,4 +39,4 @@ const TextFieldGroup = (props: ITextFieldGroupProps) => {
   );
 };
 
-export default TextFieldGroup;
+export default SelectFieldGroup;
