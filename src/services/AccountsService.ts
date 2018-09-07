@@ -1,13 +1,12 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 import { Role } from '../lib/User';
 
-interface ILoginRequest {
+export interface ILoginRequest {
   email: string;
   password: string;
 }
 
-interface IRegisterRequest {
+export interface IRegisterRequest {
   handle: string;
   name: string;
   email: string;
@@ -20,20 +19,13 @@ interface IRegisterRequest {
 export function login(payload: ILoginRequest): Promise<any> {
   return axios
     .post('http://localhost:3000/login', payload)
-    .then(response => {
-      // set cookie
-      const cookies = new Cookies();
-      cookies.set('Authorization', response.headers.authorization);
-      return null;
-    })
-    .catch(error => {
-      return error.response.data;
-    });
+    .then(response => response)
+    .catch(error => Promise.reject(error));
 }
 
 export function register(payload: IRegisterRequest): Promise<any> {
   return axios
     .post('http://localhost:3000/register', payload)
-    .then(response => null)
-    .catch(error => error.response.data);
+    .then(response => response)
+    .catch(error => Promise.reject(error));
 }

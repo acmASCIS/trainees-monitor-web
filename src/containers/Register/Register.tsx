@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { History } from 'history';
-import message from 'antd/lib/message';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import TextFieldGroup from '../../components/TextFieldGroup/TextFieldGroup';
 import SelectFieldGroup from '../../components/SelectFieldGroup/SelectFieldGroup';
 import { Role } from '../../lib/User';
-import { register } from '../../services/AccountsService';
+import { IRegisterRequest } from '../../services/AccountsService';
+import { registerUser } from '../../actions/authActions';
+import { History } from 'history';
 
-interface IRegisterProps {
-  history: History;
+interface IRegisterProps extends RouteComponentProps<{}> {
+  registerUser: (payload: IRegisterRequest, history: History) => void;
+  errors: any;
+  auth: any;
 }
 
 interface IRegisterState {
@@ -20,10 +23,9 @@ interface IRegisterState {
   confirmPassword: string;
   role: string;
   codeforcesHandle: string;
-  errors: any;
 }
 
-export default class Register extends React.Component<IRegisterProps, IRegisterState> {
+class Register extends React.Component<IRegisterProps, IRegisterState> {
   constructor(props: IRegisterProps) {
     super(props);
     this.state = {
@@ -33,31 +35,32 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
       password: '',
       confirmPassword: '',
       role: 'Trainee',
-      codeforcesHandle: '',
-      errors: {}
+      codeforcesHandle: ''
     };
+  }
+
+  public componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   public onSubmit = (event: any) => {
     event.preventDefault();
 
     const { handle, name, email, password, confirmPassword, role, codeforcesHandle } = this.state;
-    register({
-      handle,
-      name,
-      email,
-      password,
-      confirmPassword,
-      role: Role[role],
-      codeforcesHandle
-    }).then(errors => {
-      if (errors) {
-        this.setState({ errors: errors.body });
-      } else {
-        message.success('The account is successfully created.');
-        this.props.history.push('/login');
-      }
-    });
+    this.props.registerUser(
+      {
+        handle,
+        name,
+        email,
+        password,
+        confirmPassword,
+        role: Role[role],
+        codeforcesHandle
+      },
+      this.props.history
+    );
   };
 
   public onChange = (event: any) => {
@@ -67,16 +70,9 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
   };
 
   public render() {
-    const {
-      handle,
-      name,
-      email,
-      password,
-      confirmPassword,
-      role,
-      codeforcesHandle,
-      errors
-    } = this.state;
+    const { handle, name, email, password, confirmPassword, role, codeforcesHandle } = this.state;
+    let { errors } = this.props;
+    errors = errors.body ? errors.body : {};
     return (
       <div className="row  height-100 justify-content-center align-items-center">
         <div className="col-lg-4 col-md-7 d-flex">
@@ -161,3 +157,13 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
     );
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));

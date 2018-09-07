@@ -1,43 +1,45 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { History } from 'history';
-import message from 'antd/lib/message';
+import { connect } from 'react-redux';
 
 import TextFieldGroup from '../../components/TextFieldGroup/TextFieldGroup';
-import { login } from '../../services/AccountsService';
+import { loginUser } from '../../actions/authActions';
+import { ILoginRequest } from '../../services/AccountsService';
+import { clearErrors } from '../../actions/errorActions';
 
-interface ILoginProps {
-  history: History;
+interface ILoginProps extends RouteComponentProps<any> {
+  loginUser: (payload: ILoginRequest, history: History) => void;
+  clearErrors: () => void;
+  errors: any;
+  auth: any;
 }
 
 interface ILoginState {
   email: string;
   password: string;
-  error: string;
 }
 
-export default class Login extends React.Component<ILoginProps, ILoginState> {
+class Login extends React.Component<ILoginProps, ILoginState> {
   constructor(props: ILoginProps) {
     super(props);
     this.state = {
       email: '',
-      password: '',
-      error: ''
+      password: ''
     };
+  }
+
+  public componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   public onSubmit = (event: any) => {
     event.preventDefault();
 
     const { email, password } = this.state;
-    login({ email, password }).then(error => {
-      if (error) {
-        this.setState({ error: error.message });
-      } else {
-        message.success('Welcome back');
-        this.props.history.push('/dashboard');
-      }
-    });
+    this.props.loginUser({ email, password }, this.props.history);
   };
 
   public onChange = (event: any) => {
@@ -47,19 +49,20 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   public resetError = () => {
-    this.setState({ error: '' });
+    this.props.clearErrors();
   };
 
   public render() {
+    const { errors } = this.props;
     return (
       <div className="row  height-100 justify-content-center align-items-center">
         <div className="col-lg-4 col-md-7 d-flex">
           <div className="flex-fill py-4">
             <h1 className="h2 text-center mb-4">Login</h1>
-            {this.state.error && (
+            {errors.message && (
               <div className="alert alert-danger alert-dismissible mb-4 fade show" role="alert">
-                {this.state.error}
-                <button type="button" className="close" onClick={this.resetError}>
+                {errors.message}
+                <button type="button" className="close" onClick={this.props.clearErrors}>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -95,3 +98,13 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     );
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser, clearErrors }
+)(withRouter(Login));
