@@ -3,11 +3,17 @@
   z-index: 10;
   position: fixed;
   top: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
   display: block;
   line-height: 80px;
+}
+
+.side-nav {
+  flex-grow: 1;
 }
 
 .side-nav-link {
