@@ -5,8 +5,8 @@ import { Route, Redirect } from 'react-router';
 interface IPrivateRouteProps {
   component: any;
   auth: any;
-  exact: boolean;
-  path: string;
+  exact?: boolean;
+  path?: string;
 }
 
 const PrivateRoute = ({ component: Component, auth, ...rest }: IPrivateRouteProps) => (

@@ -1,0 +1,37 @@
+.nav-tabs {
+  border-radius: 0.5rem;
+  background: #EEF2F5;
+  border-bottom: none;
+}
+
+.nav-tabs .nav-item {
+  margin: .5rem;
+}
+
+.nav-tabs .nav-link {
+  font-size: .875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: .5rem;
+  transition: color .35s ease-out;
+  border: none;
+  color: rgba(33, 37, 41, 0.5);
+}
+
+.nav-tabs .nav-link:not(.active) {
+  color: rgba(33, 37, 41, 0.5);
+}
+
+.nav-tabs .nav-link.active {
+  color: #007bff;
+  background-color: #fff;
+  border-color: none;
+}
+
+.nav-tabs .nav-link.active:hover {
+  color: #007bff;
+}
+
+.nav-tabs .nav-link:not(.active):hover {
+  color: #007bff;
+}

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import store from '../../store';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
-import Dashboard from '../Dashboard/Dashboard';
+import DashboardWrapper from '../Dashboard/DashboardWrapper';
 import checkAuthToken from '../../lib/checkAuthToken';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 
@@ -23,7 +23,7 @@ class App extends React.Component {
               <Route exact={true} path="/register" component={Register} />
             </div>
             <Switch>
-              <PrivateRoute exact={true} path="/dashboard" component={Dashboard} />
+              <PrivateRoute component={DashboardWrapper} />
             </Switch>
           </div>
         </Router>

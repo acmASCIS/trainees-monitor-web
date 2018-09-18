@@ -8,8 +8,10 @@ import { logoutUser } from '../../actions/authActions';
 
 interface ISidebarProps {
   logoutUser: () => void;
+  auth: any;
 }
 
+// TODO: Sidebar active tab
 const Sidebar = (props: ISidebarProps) => {
   return (
     <div className="side-menu height-100 bg-primary">
@@ -18,7 +20,7 @@ const Sidebar = (props: ISidebarProps) => {
       </Link>
       <ul className="side-nav navbar-nav">
         <li className="side-nav-item">
-          <Link to="" className="side-nav-link active">
+          <Link to="dashboard" className="side-nav-link active">
             <i className="dripicons dripicons-meter" />
             <span>Dashboard</span>
           </Link>
@@ -30,7 +32,7 @@ const Sidebar = (props: ISidebarProps) => {
           </Link>
         </li>
         <li className="side-nav-item">
-          <Link to="" className="side-nav-link">
+          <Link to={`/${props.auth.user.handle}`} className="side-nav-link">
             <i className="dripicons dripicons-user" />
             <span>Profile</span>
           </Link>
@@ -43,7 +45,11 @@ const Sidebar = (props: ISidebarProps) => {
   );
 };
 
+const mapStateToProps = (state: any) => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { logoutUser }
 )(Sidebar);
