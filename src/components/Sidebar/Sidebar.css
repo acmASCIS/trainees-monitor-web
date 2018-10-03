@@ -1,0 +1,47 @@
+.side-menu {
+  width: 250px;
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  display: block;
+  line-height: 80px;
+}
+
+.side-nav {
+  flex-grow: 1;
+}
+
+.side-nav-link {
+  color: #cedce4;
+  display: block;
+  padding: 15px 30px;
+  font-size: .9375rem;
+  position: relative;
+  transition: all .4s;
+}
+
+.side-nav .side-nav-link.active {
+  color: #fff;
+}
+
+.side-nav .side-nav-link:hover {
+  color: #fff;
+}
+
+.side-nav .side-nav-link i {
+    display: inline-block;
+    line-height: 1.0625rem;
+    margin: 0 10px 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    width: 20px;
+}
+
+.side-nav .side-nav-link span {
+    vertical-align: middle;
+}
