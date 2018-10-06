@@ -7,8 +7,12 @@ import TabSection from '../../components/Tabs/TabSection';
 import About from './About';
 import ProfileHeader from './ProfileHeader';
 import './Profile.css';
+import LoadableComponent from '../../components/LoadableComponent/LoadableComponent';
+import Analysis from './Analysis/Analysis';
 
-interface IProfileProps extends RouteComponentProps<{ handle: string }> {}
+interface IProfileProps extends RouteComponentProps<{ handle: string }> {
+  setLoading: (loadingState: boolean) => void;
+}
 
 interface IProfileState {
   user: {
@@ -22,7 +26,9 @@ interface IProfileState {
     rank: string;
     rating: number;
     lastOnlineTimeSeconds: number;
+    isFollowed: boolean;
   };
+  isLoading: boolean;
 }
 
 class Profile extends React.Component<IProfileProps, IProfileState> {
@@ -39,8 +45,10 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
         },
         rank: '',
         rating: 0,
-        lastOnlineTimeSeconds: 0
-      }
+        lastOnlineTimeSeconds: 0,
+        isFollowed: false
+      },
+      isLoading: true
     };
   }
 
@@ -48,29 +56,47 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
     const { handle } = this.props.match.params;
     try {
       const user = await getProfile(handle);
-      this.setState({ user });
+      console.log(user);
+      this.setState({ user, isLoading: false });
     } catch (error) {
       // TODO: redirect to 404
       console.log(error);
     }
   }
 
+  public changeFollowState = (newFollowState: boolean) => {
+    console.log(newFollowState);
+    const user = this.state.user;
+    user.isFollowed = newFollowState;
+    this.setState({ user });
+  };
+
   public render() {
-    const { name, role, handle } = this.state.user;
+    const { name, role, handle, isFollowed } = this.state.user;
     return (
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-xl-10 col-lg-11">
-            <ProfileHeader name={name} role={role} handle={handle} />
-            <Tabs>
-              <TabSection label="About">
-                <About user={this.state.user} />
-              </TabSection>
-              <TabSection label="Analysis">Hello Analysis</TabSection>
-            </Tabs>
+      <LoadableComponent isLoading={this.state.isLoading}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-10 col-lg-11">
+              <ProfileHeader
+                name={name}
+                role={role}
+                handle={handle}
+                isFollowed={isFollowed}
+                changeFollowState={this.changeFollowState}
+              />
+              <Tabs>
+                <TabSection label="About">
+                  <About user={this.state.user} />
+                </TabSection>
+                <TabSection label="Analysis">
+                  <Analysis handle={this.state.user.handle} />
+                </TabSection>
+              </Tabs>
+            </div>
           </div>
         </div>
-      </div>
+      </LoadableComponent>
     );
   }
 }
