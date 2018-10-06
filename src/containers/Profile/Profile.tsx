@@ -26,6 +26,7 @@ interface IProfileState {
     rank: string;
     rating: number;
     lastOnlineTimeSeconds: number;
+    isFollowed: boolean;
   };
   isLoading: boolean;
 }
@@ -44,7 +45,8 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
         },
         rank: '',
         rating: 0,
-        lastOnlineTimeSeconds: 0
+        lastOnlineTimeSeconds: 0,
+        isFollowed: false
       },
       isLoading: true
     };
@@ -54,6 +56,7 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
     const { handle } = this.props.match.params;
     try {
       const user = await getProfile(handle);
+      console.log(user);
       this.setState({ user, isLoading: false });
     } catch (error) {
       // TODO: redirect to 404
@@ -61,14 +64,27 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
     }
   }
 
+  public changeFollowState = (newFollowState: boolean) => {
+    console.log(newFollowState);
+    const user = this.state.user;
+    user.isFollowed = newFollowState;
+    this.setState({ user });
+  };
+
   public render() {
-    const { name, role, handle } = this.state.user;
+    const { name, role, handle, isFollowed } = this.state.user;
     return (
       <LoadableComponent isLoading={this.state.isLoading}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-10 col-lg-11">
-              <ProfileHeader name={name} role={role} handle={handle} />
+              <ProfileHeader
+                name={name}
+                role={role}
+                handle={handle}
+                isFollowed={isFollowed}
+                changeFollowState={this.changeFollowState}
+              />
               <Tabs>
                 <TabSection label="About">
                   <About user={this.state.user} />

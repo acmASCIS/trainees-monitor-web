@@ -6,3 +6,17 @@ export function getProfile(handle: string): Promise<any> {
     .then(response => response.data)
     .catch(error => Promise.reject(error));
 }
+
+export function unfollowProfile(handle: string) {
+  return axios
+    .get(`http://localhost:3000/profile/unfollow?handle=${handle}`)
+    .then(response => response.data)
+    .catch(error => Promise.reject(error));
+}
+
+export function followProfile(handle: string) {
+  return axios
+    .get(`http://localhost:3000/profile/follow?handle=${handle}`)
+    .then(response => response.data)
+    .catch(error => Promise.reject(error));
+}
