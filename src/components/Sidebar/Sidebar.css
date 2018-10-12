@@ -33,6 +33,10 @@
   color: #fff;
 }
 
+.side-nav .side-nav-link:focus {
+  text-decoration: none;
+}
+
 .side-nav .side-nav-link i {
     display: inline-block;
     line-height: 1.0625rem;
