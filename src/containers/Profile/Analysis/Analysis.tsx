@@ -26,10 +26,9 @@ class Analysis extends React.Component<IAnalysisProps, IAnalysisState> {
     try {
       await this.setState({ isLoading: true });
       const analysis = await getAnalysis(handle);
-      this.setState({ analysis, isLoading: false });
-    } catch (error) {
-      // TODO: Handle 403, 401
-      console.log(error);
+      this.setState({ analysis });
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
