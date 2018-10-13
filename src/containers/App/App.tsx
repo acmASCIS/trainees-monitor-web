@@ -9,6 +9,7 @@ import DashboardWrapper from '../Dashboard/DashboardWrapper';
 import checkAuthToken from '../../lib/checkAuthToken';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import '../../lib/axiosConfig';
+import AdminPanel from '../AdminPanel/AdminPanel';
 
 // Check for Token
 checkAuthToken();
@@ -23,6 +24,7 @@ class App extends React.Component {
               <Route exact={true} path="/login" component={Login} />
               <Route exact={true} path="/register" component={Register} />
               <Redirect exact={true} from="/" to="/dashboard" />
+              <PrivateRoute path="/admin" component={AdminPanel} />
               <PrivateRoute path="/" component={DashboardWrapper} />
             </Switch>
           </React.Fragment>

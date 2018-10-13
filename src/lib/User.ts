@@ -1,4 +1,5 @@
 export enum Role {
   Trainee,
-  Mentor
+  Mentor,
+  Admin
 }

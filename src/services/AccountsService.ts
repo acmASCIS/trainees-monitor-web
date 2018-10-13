@@ -29,3 +29,17 @@ export function register(payload: IRegisterRequest): Promise<any> {
     .then(response => response)
     .catch(error => Promise.reject(error));
 }
+
+export function getUnconfirmedUsers(): Promise<any> {
+  return axios
+    .get('http://localhost:3000/unconfirmed')
+    .then(response => response.data)
+    .catch(error => Promise.reject(error));
+}
+
+export function confirmUser(handle: string): Promise<any> {
+  return axios
+    .post(`http://localhost:3000/confirm?handle=${handle}`)
+    .then(response => response.data)
+    .catch(error => Promise.reject(error));
+}
