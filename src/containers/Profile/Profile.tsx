@@ -69,7 +69,6 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
   }
 
   public changeFollowState = (newFollowState: boolean) => {
-    console.log(newFollowState);
     const user = this.state.user;
     user.isFollowed = newFollowState;
     this.setState({ user });

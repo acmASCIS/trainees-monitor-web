@@ -2,7 +2,12 @@ import axios from 'axios';
 import notification from 'antd/lib/notification';
 import { logoutUser } from '../actions/authActions';
 import store from '../store';
+import config from '.';
 
+// Setting base URL
+axios.defaults.baseURL = config.API_URL;
+
+// Setting up interceptors
 axios.interceptors.response.use(
   response => {
     // response interceptor

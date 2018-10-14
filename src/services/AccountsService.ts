@@ -18,28 +18,28 @@ export interface IRegisterRequest {
 
 export function login(payload: ILoginRequest): Promise<any> {
   return axios
-    .post('http://localhost:3000/login', payload)
+    .post('/login', payload)
     .then(response => response)
     .catch(error => Promise.reject(error));
 }
 
 export function register(payload: IRegisterRequest): Promise<any> {
   return axios
-    .post('http://localhost:3000/register', payload)
+    .post('/register', payload)
     .then(response => response)
     .catch(error => Promise.reject(error));
 }
 
 export function getUnconfirmedUsers(): Promise<any> {
   return axios
-    .get('http://localhost:3000/unconfirmed')
+    .get('/unconfirmed')
     .then(response => response.data)
     .catch(error => Promise.reject(error));
 }
 
 export function confirmUser(handle: string): Promise<any> {
   return axios
-    .post(`http://localhost:3000/confirm?handle=${handle}`)
+    .post(`/confirm?handle=${handle}`)
     .then(response => response.data)
     .catch(error => Promise.reject(error));
 }

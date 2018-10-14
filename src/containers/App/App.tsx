@@ -8,7 +8,7 @@ import Register from '../Register/Register';
 import DashboardWrapper from '../Dashboard/DashboardWrapper';
 import checkAuthToken from '../../lib/checkAuthToken';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
-import '../../lib/axiosConfig';
+import '../../config/axiosConfig';
 import AdminPanel from '../AdminPanel/AdminPanel';
 
 // Check for Token
