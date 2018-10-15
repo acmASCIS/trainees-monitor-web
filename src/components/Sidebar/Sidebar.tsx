@@ -11,7 +11,6 @@ interface ISidebarProps {
   auth: any;
 }
 
-// TODO: Sidebar active tab
 const Sidebar = (props: ISidebarProps) => {
   return (
     <div className="side-menu height-100 bg-primary">
@@ -20,15 +19,15 @@ const Sidebar = (props: ISidebarProps) => {
       </Link>
       <ul className="side-nav navbar-nav">
         <li className="side-nav-item">
-          <Link to="dashboard" className="side-nav-link active">
+          <Link to="dashboard" className="side-nav-link">
             <i className="dripicons dripicons-meter" />
             <span>Dashboard</span>
           </Link>
         </li>
         <li className="side-nav-item">
-          <Link to="" className="side-nav-link">
+          <Link to="following" className="side-nav-link">
             <i className="dripicons dripicons-graph-line" />
-            <span>Analysis</span>
+            <span>Following</span>
           </Link>
         </li>
         <li className="side-nav-item">

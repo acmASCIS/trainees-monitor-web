@@ -1,0 +1,13 @@
+.title404 {
+  font-size: 120pt;
+  font-weight: 900;
+  margin: 0px;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.subtitle404 {
+  font-size: 15pt;
+  font-weight: 900;
+  margin: 0px;
+}

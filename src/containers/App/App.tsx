@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import store from '../../store';
@@ -8,6 +8,8 @@ import Register from '../Register/Register';
 import DashboardWrapper from '../Dashboard/DashboardWrapper';
 import checkAuthToken from '../../lib/checkAuthToken';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
+import '../../config/axiosConfig';
+import AdminPanel from '../AdminPanel/AdminPanel';
 
 // Check for Token
 checkAuthToken();
@@ -17,15 +19,15 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-          <div>
-            <div className="container-fluid">
+          <React.Fragment>
+            <Switch>
               <Route exact={true} path="/login" component={Login} />
               <Route exact={true} path="/register" component={Register} />
-            </div>
-            <Switch>
-              <PrivateRoute component={DashboardWrapper} />
+              <Redirect exact={true} from="/" to="/dashboard" />
+              <PrivateRoute path="/admin" component={AdminPanel} />
+              <PrivateRoute path="/" component={DashboardWrapper} />
             </Switch>
-          </div>
+          </React.Fragment>
         </Router>
       </Provider>
     );
