@@ -10,16 +10,10 @@ import './Profile.css';
 import LoadableComponent from '../../components/LoadableComponent/LoadableComponent';
 import Analysis from './Analysis/Analysis';
 
-<<<<<<< HEAD
 type MixedPropType = RouteComponentProps<{ handle: string }> & RouteComponentProps<any>;
 
 // tslint:disable-next-line:no-empty-interface
 interface IProfileProps extends MixedPropType {}
-=======
-interface IProfileProps extends RouteComponentProps<{ handle: string }> {
-  setLoading: (loadingState: boolean) => void;
-}
->>>>>>> 1a100bd3dfaf1736eb1d32d3d8fd58860632fca5
 
 interface IProfileState {
   user: {
@@ -63,12 +57,7 @@ class Profile extends React.Component<IProfileProps, IProfileState> {
     const { handle } = this.props.match.params;
     try {
       const user = await getProfile(handle);
-<<<<<<< HEAD
       this.setState({ user });
-=======
-      console.log(user);
-      this.setState({ user, isLoading: false });
->>>>>>> 1a100bd3dfaf1736eb1d32d3d8fd58860632fca5
     } catch (error) {
       // User not found
       if (error.response.status === 404) {
