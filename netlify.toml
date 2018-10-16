@@ -1,5 +1,8 @@
 [context.production]
-  API_URL = ""
+  API_URL = "http://monitorapi.acmascis.com"
+
+[context.staging]
+  API_URL = "http://monitorapistaging.acmascis.com"
 
 [context.staging]
   API_URL = "http://monitorapistaging.acmascis.com"
