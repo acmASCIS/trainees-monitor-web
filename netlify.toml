@@ -5,4 +5,4 @@
   API_URL = "http://monitorapistaging.acmascis.com"
 
 [context.development.environment]
-  API_URL = "http://monitorapistaging.acmascis.com"
+  REACT_APP_API_URL = "http://monitorapistaging.acmascis.com"

@@ -4,7 +4,7 @@ import { logoutUser } from '../actions/authActions';
 import store from '../store';
 
 // Setting base URL
-axios.defaults.baseURL = process.env.API_URL || 'http://localhost:3000';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 // Setting up interceptors
 axios.interceptors.response.use(
