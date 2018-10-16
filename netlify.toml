@@ -4,5 +4,5 @@
 [context.staging]
   API_URL = "http://monitorapistaging.acmascis.com"
 
-[context.staging]
+[context.development]
   API_URL = "http://monitorapistaging.acmascis.com"
