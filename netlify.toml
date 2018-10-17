@@ -1,0 +1,13 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  API_URL = "https://trainees-monitor-prod.herokuapp.com"
+
+[context.staging.environment]
+  API_URL = "https://trainees-monitor-staging.herokuapp.com"
+
+[context.development.environment]
+  REACT_APP_API_URL = "https://trainees-monitor-dev.herokuapp.com"

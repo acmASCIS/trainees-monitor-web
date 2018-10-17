@@ -2,10 +2,10 @@ import axios from 'axios';
 import notification from 'antd/lib/notification';
 import { logoutUser } from '../actions/authActions';
 import store from '../store';
-import config from '.';
 
 // Setting base URL
-axios.defaults.baseURL = config.API_URL;
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
 
 // Setting up interceptors
 axios.interceptors.response.use(
