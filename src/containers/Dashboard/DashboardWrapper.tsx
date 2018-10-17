@@ -6,6 +6,8 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import './Dashboard.css';
 import Profile from '../Profile/Profile';
 import Dashboard from './Dashboard';
+import Following from '../Following/Following';
+import Page404 from '../Page404/Page404';
 
 interface IDashboardProps {
   auth: any;
@@ -19,7 +21,14 @@ class DashboardWrapper extends React.Component<IDashboardProps, {}> {
         <div className="wrapper height-100 p-4">
           <Switch>
             <Route exact={true} path="/dashboard" component={Dashboard} />
-            <Route exact={true} path="/:handle" component={Profile} />
+            <Route exact={true} path="/following" component={Following} />
+            <Route exact={true} path="/404" component={Page404} />
+            <Route
+              exact={true}
+              path="/:handle"
+              render={props => <Profile key={props.match.params.handle} {...props} />}
+            />
+            <Route exact={true} path="*" component={Page404} />
           </Switch>
         </div>
       </React.Fragment>

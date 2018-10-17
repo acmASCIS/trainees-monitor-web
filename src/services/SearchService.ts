@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export function getAnalysis(handle: string): Promise<any> {
+export function searchUsers(query: string): Promise<any[]> {
   return axios
-    .get(`/analysis/${handle}`)
+    .get(`/users/search?query=${query}`)
     .then(response => response.data)
     .catch(error => Promise.reject(error));
 }
