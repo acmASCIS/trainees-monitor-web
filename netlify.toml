@@ -10,4 +10,4 @@
   API_URL = "https://trainees-monitor-staging.herokuapp.com"
 
 [context.development.environment]
-  REACT_APP_API_URL = "https://trainees-monitor-deve.herokuapp.com"
+  REACT_APP_API_URL = "https://trainees-monitor-dev.herokuapp.com"
