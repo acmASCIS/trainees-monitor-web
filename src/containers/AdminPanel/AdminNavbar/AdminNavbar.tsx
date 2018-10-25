@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutUser } from 'src/actions/authActions';
 
-const AdminNavbar = () => (
+interface IAdminNavbarProps {
+  logoutUser: any;
+}
+
+const AdminNavbar = ({ logoutUser: logout }: IAdminNavbarProps) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
     <Link className="navbar-brand" to="/admin">
       Admin Panel
@@ -18,16 +24,25 @@ const AdminNavbar = () => (
       <span className="navbar-toggler-icon" />
     </button>
     <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div className="navbar-nav">
-        <a className="nav-item nav-link" href="#users-confirmation">
+      <div className="navbar-nav flex-grow-1">
+        <a className="nav-item nav-link active" href="#users-confirmation">
           User Confirmation
         </a>
-        <a className="nav-item nav-link" href="#cf-contests">
+        <a className="nav-item nav-link active" href="#cf-contests">
           Codeforces Contests
         </a>
+        <Link className="nav-item nav-link active" to="/dashboard">
+          Dashboard
+        </Link>
       </div>
+      <button className="btn btn-outline-light" onClick={logout}>
+        Logout
+      </button>
     </div>
   </nav>
 );
 
-export default AdminNavbar;
+export default connect(
+  null,
+  { logoutUser }
+)(AdminNavbar);
