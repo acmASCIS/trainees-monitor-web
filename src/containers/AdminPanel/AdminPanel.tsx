@@ -20,8 +20,8 @@ class AdminPanel extends React.Component<IAdminPanelProps, {}> {
   public render() {
     const panels = (
       <React.Fragment>
-        <CFContestsPanel label="cf-contests" />
         <UsersConfirmationPanel label="users-confirmation" />
+        <CFContestsPanel label="cf-contests" />
       </React.Fragment>
     );
 
@@ -30,7 +30,9 @@ class AdminPanel extends React.Component<IAdminPanelProps, {}> {
         <AdminNavbar />
         <div className="container-fluid">
           {panels.props.children.filter(
-            (panel: any) => '#' + panel.props.label === this.props.location.hash
+            (panel: any, index: number) =>
+              '#' + panel.props.label === this.props.location.hash ||
+              (this.props.location.hash === '' && index === 0)
           )}
         </div>
       </React.Fragment>

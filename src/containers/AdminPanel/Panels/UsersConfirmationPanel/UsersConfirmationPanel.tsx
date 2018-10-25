@@ -2,6 +2,7 @@ import * as React from 'react';
 import Popconfirm from 'antd/lib/popconfirm';
 
 import { getUnconfirmedUsers, confirmUser } from 'src/services/AccountsService';
+import LoadableComponent from 'src/components/LoadableComponent/LoadableComponent';
 
 interface IUsersConfirmationPanelProps {
   label: string;
@@ -9,6 +10,7 @@ interface IUsersConfirmationPanelProps {
 
 interface IUsersConfirmationPanelState {
   users: any[];
+  isLoading: boolean;
 }
 
 class UsersConfirmationPanel extends React.Component<
@@ -18,13 +20,14 @@ class UsersConfirmationPanel extends React.Component<
   constructor(props: IUsersConfirmationPanelProps) {
     super(props);
     this.state = {
-      users: []
+      users: [],
+      isLoading: true
     };
   }
 
   public async componentWillMount() {
     const users = await getUnconfirmedUsers();
-    this.setState({ users });
+    this.setState({ users, isLoading: false });
   }
 
   public confirmUser = async (handle: string) => {
@@ -41,24 +44,30 @@ class UsersConfirmationPanel extends React.Component<
     return (
       <div className="container d-flex flex-column py-3">
         <h5 className="m-0">Unconfirmed Users</h5>
-        <ul className="list-group  align-self-stretch my-3">
-          {users.map(user => (
-            <Popconfirm
-              key={user.handle}
-              title="Are you sure confirm this user?"
-              onConfirm={() => this.confirmUser(user.handle)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <button type="button" className="list-group-item list-group-item-action">
-                <p>Name: {user.name}</p>
-                <p>Email: {user.email}</p>
-                <p>Handle: {user.handle}</p>
-                <p>Codeforces Handle: {user.onlineJudgesHandles.codeforces}</p>
-              </button>
-            </Popconfirm>
-          ))}
-        </ul>
+        <LoadableComponent isLoading={this.state.isLoading}>
+          <ul className="list-group  align-self-stretch my-3">
+            {users.length === 0 ? (
+              <p>There are no users waiting for confirmation</p>
+            ) : (
+              users.map(user => (
+                <Popconfirm
+                  key={user.handle}
+                  title="Are you sure confirm this user?"
+                  onConfirm={() => this.confirmUser(user.handle)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <button type="button" className="list-group-item list-group-item-action">
+                    <p>Name: {user.name}</p>
+                    <p>Email: {user.email}</p>
+                    <p>Handle: {user.handle}</p>
+                    <p>Codeforces Handle: {user.onlineJudgesHandles.codeforces}</p>
+                  </button>
+                </Popconfirm>
+              ))
+            )}
+          </ul>
+        </LoadableComponent>
       </div>
     );
   }

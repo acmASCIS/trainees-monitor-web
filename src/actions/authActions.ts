@@ -10,7 +10,9 @@ import { login, ILoginRequest, IRegisterRequest, register } from '../services/Ac
 import setAuthToken from '../lib/setAuthToken';
 
 // Login User Action
-export const loginUser = (payload: ILoginRequest, history: History) => (dispatch: Dispatch) => {
+export const loginUser = (payload: ILoginRequest, history: History, onFinish: () => void) => (
+  dispatch: Dispatch
+) => {
   login(payload)
     .then(response => {
       const token = response.headers.authorization;
@@ -30,15 +32,17 @@ export const loginUser = (payload: ILoginRequest, history: History) => (dispatch
       dispatch(clearErrors());
 
       // Success message and redirection to dashboard
+      onFinish();
       message.success('Welcome back');
       history.push('/dashboard');
     })
-    .catch(error =>
+    .catch(error => {
       dispatch({
         type: GET_ERRORS,
         payload: error.response.data
-      })
-    );
+      });
+      onFinish();
+    });
 };
 
 // Register User Action
