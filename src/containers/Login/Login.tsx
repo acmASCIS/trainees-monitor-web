@@ -9,7 +9,7 @@ import { ILoginRequest } from '../../services/AccountsService';
 import { clearErrors } from '../../actions/errorActions';
 
 interface ILoginProps extends RouteComponentProps<any> {
-  loginUser: (payload: ILoginRequest, history: History) => void;
+  loginUser: (payload: ILoginRequest, history: History, onFinish: () => void) => void;
   clearErrors: () => void;
   errors: any;
   auth: any;
@@ -18,6 +18,7 @@ interface ILoginProps extends RouteComponentProps<any> {
 interface ILoginState {
   email: string;
   password: string;
+  isLoading: boolean;
 }
 
 class Login extends React.Component<ILoginProps, ILoginState> {
@@ -25,7 +26,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      isLoading: false
     };
   }
 
@@ -35,11 +37,14 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     }
   }
 
-  public onSubmit = (event: any) => {
+  public onSubmit = async (event: any) => {
     event.preventDefault();
 
+    await this.setState({ isLoading: true });
     const { email, password } = this.state;
-    this.props.loginUser({ email, password }, this.props.history);
+    await this.props.loginUser({ email, password }, this.props.history, () =>
+      this.setState({ isLoading: false })
+    );
   };
 
   public onChange = (event: any) => {
@@ -85,7 +90,11 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                   value={this.state.password}
                   onChange={this.onChange}
                 />
-                <button type="submit" className="btn btn-primary btn-block btn-lg">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block btn-lg"
+                  disabled={this.state.isLoading}
+                >
                   Log in
                 </button>
               </form>

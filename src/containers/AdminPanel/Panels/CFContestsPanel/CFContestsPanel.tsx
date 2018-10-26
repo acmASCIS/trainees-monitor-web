@@ -2,6 +2,7 @@ import * as React from 'react';
 import Popconfirm from 'antd/lib/popconfirm';
 
 import { getCFContests, deleteCFContest, createCFContest } from 'src/services/CFContestsService';
+import LoadableComponent from 'src/components/LoadableComponent/LoadableComponent';
 
 interface ICFContestsPanelProps {
   label: string;
@@ -10,6 +11,7 @@ interface ICFContestsPanelProps {
 interface ICFContestsPanelState {
   contests: any[];
   contestId: string;
+  isLoading: boolean;
 }
 
 class CFContestsPanel extends React.Component<ICFContestsPanelProps, ICFContestsPanelState> {
@@ -17,13 +19,15 @@ class CFContestsPanel extends React.Component<ICFContestsPanelProps, ICFContests
     super(props);
     this.state = {
       contests: [],
-      contestId: ''
+      contestId: '',
+      isLoading: true
     };
   }
 
   public async componentDidMount() {
     this.setState({
-      contests: await getCFContests()
+      contests: await getCFContests(),
+      isLoading: false
     });
   }
 
@@ -52,7 +56,6 @@ class CFContestsPanel extends React.Component<ICFContestsPanelProps, ICFContests
   };
 
   public render() {
-    // TODO: add LoadableComponent
     const { contests, contestId } = this.state;
     return (
       <React.Fragment>
@@ -71,21 +74,27 @@ class CFContestsPanel extends React.Component<ICFContestsPanelProps, ICFContests
               </button>
             </div>
           </div>
-          <ul className="list-group list-group-flush align-self-stretch my-3">
-            {contests.map(contest => (
-              <Popconfirm
-                key={contest._id}
-                title="Are you sure delete this contest?"
-                onConfirm={() => this.deleteContest(contest._id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <button type="button" className="list-group-item list-group-item-action">
-                  {contest.name}
-                </button>
-              </Popconfirm>
-            ))}
-          </ul>
+          <LoadableComponent isLoading={this.state.isLoading}>
+            <ul className="list-group list-group-flush align-self-stretch my-3">
+              {contests.length === 0 ? (
+                <p>There are no contests yet.</p>
+              ) : (
+                contests.map(contest => (
+                  <Popconfirm
+                    key={contest._id}
+                    title="Are you sure delete this contest?"
+                    onConfirm={() => this.deleteContest(contest._id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <button type="button" className="list-group-item list-group-item-action">
+                      {contest.name}
+                    </button>
+                  </Popconfirm>
+                ))
+              )}
+            </ul>
+          </LoadableComponent>
         </div>
       </React.Fragment>
     );

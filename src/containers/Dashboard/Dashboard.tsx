@@ -25,8 +25,9 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
   }
 
   public submitSearch = async (searchQuery: string) => {
+    this.setState({ isLoadingSearch: true });
     const searchResult = await searchUsers(searchQuery);
-    this.setState({ searchResult });
+    this.setState({ searchResult, isLoadingSearch: false });
   };
 
   public changeFollowState = (newState: boolean, index: number) => {
