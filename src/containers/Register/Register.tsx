@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { History } from 'history';
 
 import TextFieldGroup from '../../components/TextFieldGroup/TextFieldGroup';
 import SelectFieldGroup from '../../components/SelectFieldGroup/SelectFieldGroup';
 import { Role } from '../../lib/User';
 import { IRegisterRequest } from '../../services/AccountsService';
 import { registerUser } from '../../actions/authActions';
-import { History } from 'history';
 
 interface IRegisterProps extends RouteComponentProps<{}> {
-  registerUser: (payload: IRegisterRequest, history: History) => void;
+  registerUser: (payload: IRegisterRequest, history: History, onFinish: () => void) => void;
   errors: any;
   auth: any;
 }
@@ -23,6 +23,7 @@ interface IRegisterState {
   confirmPassword: string;
   role: string;
   codeforcesHandle: string;
+  isLoading: boolean;
 }
 
 class Register extends React.Component<IRegisterProps, IRegisterState> {
@@ -35,7 +36,8 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
       password: '',
       confirmPassword: '',
       role: 'Trainee',
-      codeforcesHandle: ''
+      codeforcesHandle: '',
+      isLoading: false
     };
   }
 
@@ -48,6 +50,7 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
   public onSubmit = (event: any) => {
     event.preventDefault();
 
+    this.setState({ isLoading: true });
     const { handle, name, email, password, confirmPassword, role, codeforcesHandle } = this.state;
     this.props.registerUser(
       {
@@ -59,7 +62,8 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
         role: Role[role],
         codeforcesHandle
       },
-      this.props.history
+      this.props.history,
+      () => this.setState({ isLoading: false })
     );
   };
 
@@ -70,7 +74,16 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
   };
 
   public render() {
-    const { handle, name, email, password, confirmPassword, role, codeforcesHandle } = this.state;
+    const {
+      handle,
+      name,
+      email,
+      password,
+      confirmPassword,
+      role,
+      codeforcesHandle,
+      isLoading
+    } = this.state;
     let { errors } = this.props;
     errors = errors.body ? errors.body : {};
     return (
@@ -144,7 +157,11 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
                   onChange={this.onChange}
                   error={errors.codeforcesHandle}
                 />
-                <button type="submit" className="btn btn-primary btn-block btn-lg">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block btn-lg"
+                  disabled={isLoading}
+                >
                   Create account
                 </button>
               </form>
